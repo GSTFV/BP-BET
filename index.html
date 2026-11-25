@@ -3,8 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<link rel="icon" href="escudo-t.webp">
 <meta name="theme-color" content="#03110a">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="BP BET">
 <title>BP BET · Casa ou Empate</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,800;1,700;1,800;1,900&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -216,6 +222,51 @@ details.row[open]{border-color:var(--gold3);box-shadow:0 0 0 1px #f5c51844,0 14p
 </head>
 <body>
 
+<style>
+/* Novos recursos: abas, monte sua dupla, status, histórico */
+body{padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}
+body.hastray{padding-bottom:calc(150px + env(safe-area-inset-bottom,0px))}
+[data-tab][hidden]{display:none!important}
+.th{margin:22px 0 12px}
+details.row>summary{grid-template-columns:58px minmax(0,1fr) auto auto}
+.pick{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:#ffffff0d;color:var(--goldt);font:900 20px var(--fb);cursor:pointer;display:grid;place-items:center;transition:transform .2s,background .2s}
+.pick[aria-pressed=true]{background:linear-gradient(180deg,var(--gold2),var(--gold));color:#1a1200;border-color:var(--gold);box-shadow:0 0 14px #f5c51866}
+.pick:active{transform:scale(.9)}
+.stt{display:inline-block;margin-top:3px;font:700 11px var(--fb);letter-spacing:.04em;text-transform:uppercase;padding:1px 7px;border-radius:999px}
+.m .stt{display:table}
+.stt.pre{color:var(--neon2);background:#2ee66f18}.stt.live{color:#fff;background:#ff5c5c;box-shadow:0 0 10px #ff5c5c88}.stt.end{color:var(--mute);background:#ffffff10}
+.opt+.opt{margin-top:16px;padding-top:14px;border-top:1px dashed var(--line)}
+.opt{margin-top:8px}.on{display:block;font:900 19px var(--fd);font-style:italic;color:#fff}
+.warnline.big{font-size:15px;color:var(--ink)}
+.share{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.chip.sm{height:38px;padding:0 14px;font-size:13px;text-decoration:none;white-space:nowrap}
+.chip.wa{color:#dfffe9;border-color:#25d36666;background:#25d36622}
+.ligas{display:flex;gap:8px;overflow-x:auto;padding:4px 0 6px;scrollbar-width:none}
+.ligas::-webkit-scrollbar{display:none}
+.ligas .chip{flex:none}
+.chip.sm[aria-pressed=true]{background:linear-gradient(180deg,var(--gold2),var(--gold));color:#1a1200;border-color:var(--gold)}
+#stake{width:90px;height:40px;margin-left:6px;font:700 16px var(--fb);background:#ffffff0d;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:0 10px}
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:6;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));background:#03110ae6;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:6px max(8px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px))}
+.tabbar button{display:flex;flex-direction:column;align-items:center;gap:2px;min-height:52px;justify-content:center;background:none;border:0;color:var(--mute);font:700 12px var(--fb);cursor:pointer;border-radius:12px}
+.tabbar svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tabbar button[aria-current=page]{color:var(--goldt);background:#f5c51814}
+.tabbar button[aria-current=page] svg{filter:drop-shadow(0 0 6px #f5c51899)}
+.tray{position:fixed;left:0;right:0;bottom:calc(64px + env(safe-area-inset-bottom,0px));z-index:5;padding:0 max(12px,env(safe-area-inset-right,0px)) 0 max(12px,env(safe-area-inset-left,0px))}
+.trw{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;background:linear-gradient(180deg,#14482c,#082419);border:1px solid var(--gold3);border-radius:16px;padding:10px 14px;box-shadow:0 -6px 24px #000a,0 0 22px #f5c51833}
+.tri{flex:1 1 180px}.tri b{display:block;font:900 18px var(--fd);font-style:italic;color:var(--goldt)}.tri small{color:var(--mute);font-size:12px}
+.trn{display:flex;gap:14px}.trn span{display:flex;flex-direction:column;line-height:1.1}.trn small{font-size:11px;color:var(--mute)}.trn b{font:900 20px var(--fd);font-style:italic;color:#fff;font-variant-numeric:tabular-nums}
+.cats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:12px 0}
+.cats>div{background:var(--glass);border:1px solid var(--line2);border-radius:14px;padding:10px 12px;display:flex;flex-direction:column;gap:2px}
+.cats b{font:800 15px var(--fb);color:#fff}.cats .cr{font:900 26px var(--fd);font-style:italic;color:var(--goldt)}.cats span{font-weight:700}
+.chartbox{background:var(--glass);border:1px solid var(--line2);border-radius:16px;padding:10px;overflow-x:auto}
+.chartbox svg{display:block;width:100%;min-width:320px;height:auto;font-family:var(--fb)}
+.day{border:1px solid var(--line2);border-radius:14px;background:#ffffff05;margin-top:8px}
+.day>summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:10px;padding:12px 14px;min-height:48px;align-items:center}
+.day>summary::-webkit-details-marker{display:none}
+.day>summary b{font:900 20px var(--fd);font-style:italic;color:#fff}.day>summary span{color:var(--mute);font-size:14px}
+.day[open]{padding:0 10px 4px}
+@media(max-width:600px){details.row>summary{grid-template-columns:48px minmax(0,1fr) auto auto;gap:4px 8px}.pick{width:36px;height:36px}.trn{gap:10px}}
+</style>
 <canvas id="fx" aria-hidden="true"></canvas><div class="vig" aria-hidden="true"></div>
 <header class="top"><div class="wrap">
   <div class="brandrow">
@@ -225,168 +276,210 @@ details.row[open]{border-color:var(--gold3);box-shadow:0 0 0 1px #f5c51844,0 14p
     <p id="sub">Carregando…</p></div>
   </div>
   <div class="tick" id="tick" aria-label="Jogos do dia por chance de casa ou empate"><div class="tr" id="tickr"></div></div>
+  <div data-tab="hoje">
   <div class="board"><div id="board"></div></div>
   <div class="board" style="margin-top:12px"><div id="tripla"></div></div>
   <div class="board" style="margin-top:12px"><div id="multi"></div></div>
   <details class="fold safe" data-k="f:safe"><summary><span class="ft1">Outras duplas</span><span class="ft2">odd 1.60+ · <span id="cntS"></span></span></summary><div id="safe"></div></details>
+  </div>
 </div></header>
 
-<div class="ctl"><div class="wrap"><details class="filt"><summary>⚙ Filtros <span class="fsum">odd mín. <b id="minv2">1.30</b></span></summary><div class="fbody">
-  <label for="min">Odd mín. <span class="odd" id="minv">1.30</span></label>
-  <input type="range" id="min" min="1.20" max="1.70" step="0.01" value="1.30">
+<div class="ctl" data-tab="hoje faixa"><div class="wrap">
+  <div class="ligas" id="ligas" role="group" aria-label="Filtrar por liga"></div>
+  <details class="filt"><summary>⚙ Filtros <span class="fsum">odd mín. <b id="minv2">1.20</b> · aposta <b id="stakev">R$ 100</b></span></summary><div class="fbody">
+  <label for="stake">Valor da aposta R$ <input type="number" id="stake" min="1" step="1" value="100" inputmode="decimal"></label>
+  <label for="min">Odd mín. <span class="odd" id="minv">1.20</span></label>
+  <input type="range" id="min" min="1.20" max="1.70" step="0.01" value="1.20">
   <button class="chip" id="hide" aria-pressed="true" type="button">Esconder já iniciados</button>
   <select id="sort" aria-label="Ordenar"><option value="p">Maior probabilidade</option><option value="t">Horário</option><option value="o">Maior odd</option></select>
   <input type="search" id="q" placeholder="Buscar time ou liga" aria-label="Buscar time ou liga">
 </div></details></div></div>
 
 <main><div class="wrap">
-  <details class="sec" data-k="f:faixa" open><summary><h2>Casa ou empate · odd 1.60 a 1.75<span id="cntF"></span></h2></summary><p class="warnline" style="margin:0 0 10px">Jogos simples em que a aposta casa ou empate paga entre 1.60 e 1.75. Toque no jogo para ver a ficha.</p><div class="list" id="faixa"></div></details>
+  <section data-tab="faixa"><h2 class="th">Casa ou empate · odd 1.60 a 1.75<span id="cntF"></span></h2><p class="warnline" style="margin:0 0 12px">Jogos simples em que a aposta casa ou empate paga entre 1.60 e 1.75. A chance fica perto de 55 a 62%, e esses jogos não passam pelo filtro de segurança. Toque no jogo para ver a ficha e em ＋ para colocar na sua dupla.</p><div class="list" id="faixa"></div></section>
+  <div data-tab="hoje">
   <details class="sec" data-k="f:prin" open><summary><h2>Principais ligas<span id="cnt0"></span></h2></summary><div class="list" id="prin"></div></details>
-  <details class="sec" data-k="f:main"><summary><h2>Outras 1ª divisões<span id="cnt1"></span></h2></summary><div class="list" id="main"></div></details>
+  <details class="sec" data-k="f:main" open><summary><h2>Outras 1ª divisões<span id="cnt1"></span></h2></summary><div class="list" id="main"></div></details>
   <details class="sec" data-k="f:edge"><summary><h2>No limite<span id="cntE"></span></h2></summary><div class="list" id="edge"></div></details>
-  <details class="sec" data-k="f:other" hidden><summary><h2>Outras divisões<span id="cnt2"></span></h2></summary><div class="list" id="other"></div></details>
-  <details class="sec ontem" id="ontemsec" data-k="f:ontem"><summary><h2>Duplas de ontem<span id="ontemd"></span></h2></summary><div id="ontem"></div></details>
   <details class="sec" data-k="f:info"><summary><h2>Como funciona</h2></summary>
   <div class="key"><span><i style="background:var(--neon)"></i>Casa</span><span><i style="background:var(--gold)"></i>Empate</span><span><i style="background:var(--red)"></i>Fora</span></div>
   <p class="note" id="note"></p></details>
+  </div>
+  <section data-tab="ontem" class="ontem"><h2 class="th">Apostas de ontem<span id="ontemd"></span></h2><div id="ontem"></div></section>
+  <section data-tab="historico" class="ontem"><h2 class="th">Histórico<span id="histd"></span></h2><div id="hist"></div></section>
   <div class="foot"><img src="escudo-t.webp" alt="" width="34" height="34"><span>BP BET · análise de odds com dados do Flashscore</span></div>
 </div></main>
+
+<div class="tray" id="tray" hidden aria-live="polite"></div>
+<nav class="tabbar" aria-label="Seções">
+  <button type="button" data-go="hoje"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7l3 2-1 4h-4l-1-4z"/></svg>Hoje</button>
+  <button type="button" data-go="faixa"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17l5-5 4 3 7-8"/><path d="M15 7h5v5"/></svg>1.60–1.75</button>
+  <button type="button" data-go="ontem"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l4 4 10-10"/></svg>Ontem</button>
+  <button type="button" data-go="historico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Histórico</button>
+</nav>
 
 <!-- DADOS-INICIO -->
 <script id="dados" type="application/json">
 {}
 </script>
 <!-- DADOS-FIM -->
-
 <script type="text/plain" class="boot">
 {
 const D=JSON.parse(document.getElementById('dados').textContent);
 const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const NOT1=/Serie B|Eerste|RFEF|Championship|Copa|Taça|2ª div|Ligue 2|LaLiga2|1\. Lig|1ª div|2\. Bundesliga|Prva Liga RS|Sub-|U21|U19|B$/i;
 const PRIN=/^(Inglaterra · Premier League|Espanha · LaLiga|Itália · Serie A|Alemanha · Bundesliga|França · Ligue 1|Brasil · (Série A|Brasileirão)|Portugal · (Liga Portugal|Primeira Liga|Liga Betclic)|Holanda · Eredivisie|Argentina · Liga Profesional)\b(?![2.])|Champions League|Liga dos Campeões|Liga Europa|Europa League|Conference League|Libertadores|Sul-Americana|Sudamericana/i;
-const KNOWN=/^(Brasil|Portugal|Argentina|Arábia Saudita|México|Colômbia|Uruguai|Equador|Paraguai|Peru) ·|^EUA · MLS|^Japão · J1|^Chile · Primera|^Inglaterra · (Premier League|Championship|FA Cup|Copa da Inglaterra|Copa da Liga)|^Espanha · (LaLiga|LaLiga2|Copa do Rei|Copa del Rey)$|^Itália · (Serie A|Serie B|Copa da Itália)$|^Alemanha · (Bundesliga|2\. Bundesliga|Copa da Alemanha)$|^França · (Ligue 1|Ligue 2|Copa da França)$|^Holanda · Eredivisie|^Bélgica · Jupiler|^Turquia · Süper Lig|^Escócia · Premiership|^Grécia ·|^Suíça · Super League|^Áustria · Bundesliga|^Dinamarca · Superliga|^Noruega · Eliteserien|^Suécia · Allsvenskan|Champions League|Liga dos Campeões|Liga Europa|Europa League|Conference League|Libertadores|Sul-Americana|Sudamericana/i;
-const g=D.jogos.filter(j=>KNOWN.test(j[3])).map(([t,h,a,l,o1,ox,o2,d1,pr])=>{const s=1/o1+1/ox+1/o2;const P=pr===undefined?PRIN.test(l)&&!/LaLiga2|2\. Bundesliga/.test(l):!!pr;return{t,h,a,l,o1,ox,o2,pr:P,d1:P||(d1===undefined?!NOT1.test(l):!!d1),p1:1/o1/s,px:1/ox/s,p2:1/o2/s,p:(1/o1+1/ox)/s,est:1/(1/o1+1/ox)}});
-const st={min:1.30,hide:true,sort:'p',q:'',stake:100};
-try{const v=JSON.parse(localStorage.getItem('ce-st')||'{}');Object.assign(st,v)}catch(e){}
-st.stake=100;if(st.min<1.2)st.min=1.2;
+const KNOWN=/^(Brasil|Portugal|Argentina|Arábia Saudita|México|Colômbia|Uruguai|Equador|Paraguai|Peru) ·|^EUA · MLS|^Japão · J1|^Chile · Primera|^Inglaterra · (Premier League|FA Cup|Copa da Inglaterra|Copa da Liga)|^Espanha · (LaLiga|Copa do Rei|Copa del Rey)$|^Itália · (Serie A|Copa da Itália)$|^Alemanha · (Bundesliga|Copa da Alemanha)$|^França · (Ligue 1|Copa da França)$|^Holanda · Eredivisie|^Bélgica · Jupiler|^Turquia · Süper Lig|^Escócia · Premiership|^Grécia ·|^Suíça · Super League|^Áustria · Bundesliga|^Dinamarca · Superliga|^Noruega · Eliteserien|^Suécia · Allsvenskan|Champions League|Liga dos Campeões|Liga Europa|Europa League|Conference League|Libertadores|Sul-Americana|Sudamericana/i;
+const g=(D.jogos||[]).filter(j=>KNOWN.test(j[3])).map(([t,h,a,l,o1,ox,o2,d1,pr])=>{const s=1/o1+1/ox+1/o2;const P=pr===undefined?PRIN.test(l):!!pr;return{t,h,a,l,o1,ox,o2,pr:P,d1:P||(d1===undefined?!NOT1.test(l):!!d1),p1:1/o1/s,px:1/ox/s,p2:1/o2/s,p:(1/o1+1/ox)/s,est:1/(1/o1+1/ox),k:h+'|'+a}});
+const G=Object.fromEntries(g.map(j=>[j.k,j]));
+const DET=D.det||{},DETF=D.det_faixa||{};
+const st={min:1.20,hide:true,sort:'p',q:'',stake:100,liga:'',tab:'hoje'};
+try{const v=JSON.parse(localStorage.getItem('bpbet-st')||'{}');for(const k of ['min','hide','sort','stake'])if(k in v)st[k]=v[k]}catch(e){}
+if(!(st.stake>0))st.stake=100;if(st.min<1.2)st.min=1.2;
+const TABS=['hoje','faixa','ontem','historico'];
 const pct=x=>(x*100).toFixed(1).replace('.',',')+'%';
 const f2=x=>x.toFixed(2);
-const [Y,M,Dd]=D.data.split('-');
-const dataBR=`${Dd}/${M}`;
-function started(j){
-  const now=new Date();const today=now.toLocaleDateString('sv-SE',{timeZone:'America/Sao_Paulo'});
-  if(today!==D.data)return today>D.data;
-  const hm=now.toLocaleTimeString('pt-BR',{timeZone:'America/Sao_Paulo',hour:'2-digit',minute:'2-digit',hour12:false});
-  return j.t!=='00:00'&&j.t<=hm;
-}
-const DET=D.det||{};
-const DETF=D.det_faixa||{};
-const posN=s=>{const m=String(s||'').match(/^(\d+)º/);return m?+m[1]:null};
-const frente=j=>{const d=DET[j.h+'|'+j.a];if(!d)return false;if(typeof d.frente==='boolean')return d.frente;const c=posN(d.casa&&d.casa.pos),f=posN(d.fora&&d.fora.pos);return c!==null&&f!==null&&c<f};
-const fm=s=>`<div class="fm" aria-label="Últimos 5: ${s}">${[...(s||'')].map(c=>`<i class="${c}">${c}</i>`).join('')}</div><div class="fmn">mais recente à esquerda</div>`;
-const side=(nome,t)=>t?`<div><h3>${nome}</h3><div class="pos">${t.pos}${/º$/.test(t.pos)?`<small>${t.pts} pts</small>`:''}</div>${fm(t.forma)}<span class="tag ${t.imp}">Importância ${t.imp}</span><ul>${(t.prox||[]).map(p=>`<li class="${/copa/i.test(p)?'cup':''}">${p}</li>`).join('')||'<li>Próximo jogo depende do resultado</li>'}</ul></div>`:'';
-const xbar=j=>j.o1?`<div class="xbar"><span class="bar" aria-hidden="true"><i class="h" style="width:${j.p1*100}%"></i><i class="x" style="width:${j.px*100}%"></i><i class="a" style="width:${j.p2*100}%"></i></span><span class="odds3" style="grid-column:auto">1X2: ${f2(j.o1)} · ${f2(j.ox)} · ${f2(j.o2)} · casa ${pct(j.p1)} · empate ${pct(j.px)} · fora ${pct(j.p2)}</span></div>`:'';
-const ficha=(j,d)=>`<div class="ficha">${xbar(j)}<div class="ctx">${d.c}</div><div class="tm">${side(j.h,d.casa)}${side(j.a,d.fora)}</div><div class="rod">Risco de poupar titulares: <b class="${d.rod}">${d.rod}</b></div><p class="obs" style="margin:0">${d.obs}</p></div>`;
-const head=(j)=>`<span class="t">${j.t}</span>
-<span class="m"><b>${j.h}</b> x ${j.a}<span class="lg">${j.l}${j.t==='00:00'?' · madrugada de sábado':''}</span></span>
-<span class="r"><span class="num">${pct(j.p)}</span><span class="sub">odd 1X ~${f2(j.est)}</span></span>
-<span class="bar" aria-hidden="true"><i class="h" style="width:${j.p1*100}%"></i><i class="x" style="width:${j.px*100}%"></i><i class="a" style="width:${j.p2*100}%"></i></span>
-<span class="odds3">1X2: ${f2(j.o1)} · ${f2(j.ox)} · ${f2(j.o2)}</span>`;
+const brl=v=>'R$ '+v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+const stk=()=>'R$ '+st.stake.toLocaleString('pt-BR',{maximumFractionDigits:2});
+const dm=s=>{const [y,m,d]=String(s||'').split('-');return d?`${d}/${m}`:''};
+/* Horário do jogo (Brasília, UTC-3) */
+const kick=j=>new Date(`${D.data}T${j.t}:00-03:00`).getTime();
+const started=j=>Date.now()>=kick(j);
+function status(j){const ms=kick(j)-Date.now();if(isNaN(ms))return{c:'',t:''};
+ if(ms>0){const m=Math.round(ms/60000),h=Math.floor(m/60);return{c:'pre',t:h?`começa em ${h}h${String(m%60).padStart(2,'0')}`:`começa em ${m} min`}}
+ return -ms<115*60000?{c:'live',t:'em andamento'}:{c:'end',t:'encerrado'}}
+/* Ficha */
+const fm=s=>`<div class="fm" aria-label="Últimos 5: ${esc(s)}">${[...(s||'')].map(c=>`<i class="${c}">${c}</i>`).join('')}</div><div class="fmn">mais recente à esquerda</div>`;
+const side=(nome,t)=>t?`<div><h3>${esc(nome)}</h3><div class="pos">${esc(t.pos)}${/º$/.test(t.pos)?`<small>${t.pts} pts</small>`:''}</div>${fm(t.forma)}<span class="tag ${t.imp}">Importância ${t.imp}</span><ul>${(t.prox||[]).map(p=>`<li class="${/copa/i.test(p)?'cup':''}">${esc(p)}</li>`).join('')||'<li>Próximo jogo depende do resultado</li>'}</ul></div>`:'';
+const xbar=j=>j&&j.o1?`<div class="xbar"><span class="bar" aria-hidden="true"><i class="h" style="width:${j.p1*100}%"></i><i class="x" style="width:${j.px*100}%"></i><i class="a" style="width:${j.p2*100}%"></i></span><span class="odds3">1X2: ${f2(j.o1)} · ${f2(j.ox)} · ${f2(j.o2)} · casa ${pct(j.p1)} · empate ${pct(j.px)} · fora ${pct(j.p2)}</span></div>`:'';
+const ficha=(j,d)=>d?`<div class="ficha">${xbar(j)}<div class="ctx">${esc(d.c)}</div><div class="tm">${side(j.h,d.casa)}${side(j.a,d.fora)}</div><div class="rod">Risco de poupar titulares: <b class="${d.rod}">${d.rod}</b></div><p class="obs" style="margin:0">${esc(d.obs)}</p></div>`:`<div class="ficha">${xbar(j)}<p class="nof" style="margin:0">Ficha detalhada não disponível para este jogo.</p></div>`;
+/* Seleção "monte sua dupla" */
+const picks=new Set();
+const pickBtn=j=>`<button type="button" class="pick" data-pick="${esc(j.k)}" aria-pressed="${picks.has(j.k)}" aria-label="${picks.has(j.k)?'Tirar da':'Colocar na'} sua dupla: ${esc(j.h)} x ${esc(j.a)}">${picks.has(j.k)?'✓':'＋'}</button>`;
 const open=new Set();
-const row=(j,cls)=>{const k=j.h+'|'+j.a,d=DET[k]||DETF[k],c=`row ${cls}${started(j)?' past':''}`;
-  return `<details class="${c}" data-k="${k}"${open.has(k)?' open':''}><summary>${head(j)}</summary>${d?ficha(j,d):`<div class="ficha">${xbar(j)}<p class="nof" style="margin:0">Ficha detalhada não disponível para este jogo.</p></div>`}</details>`};
+const lshort=l=>l.split(' · ')[1]||l;
+const row=(j,cls)=>{const d=DET[j.k]||DETF[j.k],s=status(j);
+ return `<details class="row ${cls}${started(j)?' past':''}" data-k="${esc(j.k)}"${open.has(j.k)?' open':''}><summary><span class="t">${j.t}</span>
+<span class="m"><b>${esc(j.h)}</b> x ${esc(j.a)}<span class="lg">${esc(j.l)}</span>${s.t?`<span class="stt ${s.c}">${s.t}</span>`:''}</span>
+<span class="r"><span class="num">${pct(j.p)}</span><span class="sub">odd 1X ~${f2(j.est)}</span></span>${pickBtn(j)}</summary>${ficha(j,d)}</details>`};
 document.addEventListener('toggle',e=>{const k=e.target.dataset&&e.target.dataset.k;if(k)e.target.open?open.add(k):open.delete(k)},true);
+/* Blocos de aposta (dupla, tripla, múltipla) */
+const leg=(j,n,o,tagPr)=>{const ok=o+':'+j.k,d=DET[j.k]||DETF[j.k],s=status(j);return `<details class="legd" data-k="${esc(ok)}"${open.has(ok)?' open':''}><summary class="leg"><span class="n">${n}</span><div class="lm"><b>${esc(j.h)} x ${esc(j.a)}</b><span>${j.t} · ${esc(lshort(j.l))}${tagPr&&j.pr?' <em class="pp">Principal</em>':''}${s.t?` · <span class="stt ${s.c}">${s.t}</span>`:''}</span></div><div class="lr"><span class="lp">${pct(j.p)}</span><span class="lo">@${f2(j.est)}</span></div></summary>${ficha(j,d)}</details>`};
+const tot=(js,lab)=>{const oc=js.reduce((s,j)=>s*j.est,1),pc=js.reduce((s,j)=>s*j.p,1);return `<div class="tot"><div><span class="k">Odd combinada</span><span class="big">~${f2(oc)}</span></div><div><span class="k">${lab}</span><span class="mid">${pct(pc)}</span></div><div><span class="k">${stk()} viram</span><span class="sret"><b>${brl(st.stake*oc)}</b></span></div></div>`};
+const shareTxt=(title,js)=>{const oc=js.reduce((s,j)=>s*j.est,1),pc=js.reduce((s,j)=>s*j.p,1);return `⚽ BP BET · ${title} (${dm(D.data)})\n`+js.map(j=>`• ${j.t} ${j.h} x ${j.a} (${lshort(j.l)}) · casa ou empate @${f2(j.est)}`).join('\n')+`\nOdd ~${f2(oc)} · chance ${pct(pc)} · ${stk()} → ${brl(st.stake*oc)}\nOdds estimadas, confira na casa de apostas.`};
+const SH={};
+const shareRow=(id,title,js)=>{SH[id]=shareTxt(title,js);return `<div class="share"><button type="button" class="chip sm" data-copy="${id}">Copiar</button><a class="chip sm wa" href="https://wa.me/?text=${encodeURIComponent(SH[id])}" target="_blank" rel="noopener">WhatsApp</a></div>`};
+document.addEventListener('click',async e=>{
+ const p=e.target.closest('.pick');if(p){e.preventDefault();e.stopPropagation();const k=p.dataset.pick;picks.has(k)?picks.delete(k):picks.size<5&&picks.add(k);render();return}
+ const c=e.target.closest('[data-copy]');if(c){const t=SH[c.dataset.copy]||'';try{await navigator.clipboard.writeText(t);c.textContent='Copiado ✓'}catch(err){c.textContent='Não deu para copiar'}setTimeout(()=>{c.textContent='Copiar'},1800);return}
+ const go=e.target.closest('[data-go]');if(go){setTab(go.dataset.go);return}
+ const lg=e.target.closest('[data-liga]');if(lg){st.liga=st.liga===lg.dataset.liga?'':lg.dataset.liga;render();return}
+ if(e.target.closest('#trayclear')){picks.clear();render()}
+});
+/* Múltipla: até 5 jogos, meta de odd 5, senão 4, senão 3, maior chance */
+function multipla(c){c=c.slice(0,18);for(const meta of [5,4,3]){let best=null;
+ const rec=(i,arr,o,p)=>{if(arr.length>=2&&o>=meta){if(!best||p>best.p)best={js:arr.slice(),o,p};}
+  if(arr.length===5)return;for(let x=i;x<c.length;x++){arr.push(c[x]);rec(x+1,arr,o*c[x].est,p*c[x].p);arr.pop()}};
+ rec(0,[],1,1);if(best)return{...best,meta}}return null}
+/* Histórico */
+const cat=t=>/^Dupla do dia/.test(t)?'Dupla do dia':/^Tripla/.test(t)?'Tripla do dia':/^Múltipla/.test(t)?'Múltipla geral':'Outras duplas';
+const net=x=>{const a=x.aposta||100;return x.bateu===true?a*x.odd-a:x.bateu===false?-a:0};
+function betsHTML(list){return list.map(x=>{const stt=x.bateu===true?'<span class="st ok">✓ Bateu</span>':x.bateu===false?'<span class="st no">✗ Não bateu</span>':'<span class="st" style="color:var(--mute)">Sem resultado</span>';
+ return `<div class="rd ${x.bateu===true?'hit':x.bateu===false?'miss':''}"><div class="hd"><b>${esc(x.tipo)}</b>${stt}</div>`+
+ x.jogos.map(j=>`<div class="rl"><i class="${j.ok===true?'ok':j.ok===false?'no':''}">${j.ok===true?'✓':j.ok===false?'✗':'–'}</i><span><b>${esc(j.h)} x ${esc(j.a)}</b><small>${esc(j.liga||'')}${j.mercado?' · '+esc(j.mercado):''} · @${f2(j.odd)}</small></span><span class="sc">${esc(j.placar||'—')}</span></div>`).join('')+
+ `<div class="ft">Odd ~${f2(x.odd)} · R$ ${x.aposta||100} → <b>${x.bateu===true?brl((x.aposta||100)*x.odd):x.bateu===false?'R$ 0,00':'—'}</b></div></div>`}).join('')}
+const sumHTML=list=>{const fin=list.filter(x=>x.bateu===true||x.bateu===false),hit=fin.filter(x=>x.bateu).length,n=fin.reduce((s,x)=>s+net(x),0);
+ return `<div class="sum"><div><b class="ok">${hit}</b><span>bateram</span></div><div><b class="no">${fin.length-hit}</b><span>não bateram</span></div><div><b class="${n>=0?'ok':'no'}">${n<0?'-':'+'}${brl(Math.abs(n))}</b><span>saldo (R$ 100 por aposta)</span></div></div>`};
+function chart(days){const pts=[{d:'',v:0}];let acc=0;for(const d of days){acc+=d.duplas.reduce((s,x)=>s+net(x),0);pts.push({d:d.data,v:acc})}
+ if(pts.length<2)return '<p class="warnline">O gráfico da banca aparece a partir do segundo dia de histórico.</p>';
+ const W=640,H=200,L=56,R=16,T=16,B=30,mn=Math.min(0,...pts.map(p=>p.v)),mx=Math.max(0,...pts.map(p=>p.v)),rg=(mx-mn)||1;
+ const X=i=>L+i*(W-L-R)/(pts.length-1),Y=v=>T+(mx-v)*(H-T-B)/rg;
+ const line=pts.map((p,i)=>`${i?'L':'M'}${X(i).toFixed(1)},${Y(p.v).toFixed(1)}`).join(' ');
+ const last=pts[pts.length-1],col=last.v>=0?'var(--neon)':'var(--red)';
+ const ticks=[mx,0,mn].filter((v,i,a)=>a.indexOf(v)===i);
+ const step=Math.ceil(pts.length/6);
+ return `<div class="chartbox"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Saldo acumulado da banca simulada, R$ 100 por aposta">
+ ${ticks.map(v=>`<line x1="${L}" x2="${W-R}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line2)" stroke-dasharray="${v===0?'0':'3 4'}"/><text x="${L-8}" y="${Y(v)+4}" text-anchor="end" fill="var(--mute)" font-size="11">${v<0?'-':''}R$${Math.abs(Math.round(v))}</text>`).join('')}
+ <path d="${line} L${X(pts.length-1)},${Y(0)} L${X(0)},${Y(0)} Z" fill="${col}" opacity=".12"/>
+ <path d="${line}" fill="none" stroke="${col}" stroke-width="2.5" stroke-linejoin="round"/>
+ ${pts.map((p,i)=>i%step===0||i===pts.length-1?`<text x="${X(i)}" y="${H-8}" text-anchor="${i?'middle':'start'}" fill="var(--mute)" font-size="11">${i?dm(p.d):'início'}</text>`:'').join('')}
+ <circle cx="${X(pts.length-1)}" cy="${Y(last.v)}" r="5" fill="${col}"/></svg></div>`}
+function renderHist(){const H=(D.historico||[]).slice().sort((a,b)=>a.data<b.data?-1:1);const el=$('hist');
+ if(!H.length){$('histd').textContent='';el.innerHTML='<div class="empty">O histórico começa a ser montado a partir da próxima atualização.</div>';return}
+ $('histd').textContent=`desde ${dm(H[0].data)}`;
+ const all=H.flatMap(d=>d.duplas);const fin=all.filter(x=>x.bateu===true||x.bateu===false);
+ const cats=['Dupla do dia','Tripla do dia','Múltipla geral','Outras duplas'].map(c=>{const l=fin.filter(x=>cat(x.tipo)===c);const h=l.filter(x=>x.bateu).length;return{c,n:l.length,h,s:l.reduce((s,x)=>s+net(x),0)}}).filter(x=>x.n);
+ el.innerHTML=sumHTML(all)+`<p class="warnline" style="margin:0 0 10px">${fin.length?`Acerto geral: <b>${Math.round(fin.filter(x=>x.bateu).length/fin.length*100)}%</b> em ${fin.length} apostas.`:''} Banca simulada com R$ 100 por aposta (R$ 10 na múltipla antiga de odd 100).</p>`+
+ chart(H)+`<div class="cats">${cats.map(x=>`<div><b>${x.c}</b><span class="cr">${x.h} de ${x.n}</span><span class="${x.s>=0?'ok':'no'}">${x.s<0?'-':'+'}${brl(Math.abs(x.s))}</span></div>`).join('')}</div>`+
+ H.slice().reverse().map(d=>`<details class="day"><summary><b>${dm(d.data)}</b><span>${d.duplas.length?`${d.duplas.filter(x=>x.bateu).length} de ${d.duplas.length} bateram`:'Não houve dupla'}</span></summary>${betsHTML(d.duplas)}</details>`).join('')}
+/* Abas */
+function setTab(t){if(!TABS.includes(t))t='hoje';st.tab=t;
+ document.querySelectorAll('[data-tab]').forEach(el=>{el.hidden=!el.dataset.tab.split(' ').includes(t)});
+ document.querySelectorAll('[data-go]').forEach(b=>b.setAttribute('aria-current',b.dataset.go===t?'page':'false'));
+ if(location.hash.slice(1)!==t&&!(t==='hoje'&&!location.hash))history.replaceState(null,'','#'+t);
+ window.scrollTo({top:0})}
+addEventListener('hashchange',()=>setTab(location.hash.slice(1)));
 function render(){
-  $('minv').textContent=f2(st.min);$('min').value=st.min;$('sort').value=st.sort;$('q').value=st.q;
-  $('hide').setAttribute('aria-pressed',st.hide);
-  const q=st.q.trim().toLowerCase();
-  let pool=g.filter(j=>!q||(j.h+' '+j.a+' '+j.l).toLowerCase().includes(q));
-  if(st.hide)pool=pool.filter(j=>!started(j));
-  pool=pool.filter(j=>j.est>=1.20&&j.d1&&DET[j.h+'|'+j.a]);
-  const srt={p:(a,b)=>b.p-a.p,t:(a,b)=>(a.t==='00:00'?'24':a.t).localeCompare(b.t==='00:00'?'24':b.t),o:(a,b)=>b.est-a.est}[st.sort];
-  const prin=pool.filter(j=>j.pr&&j.est>=st.min).sort((a,b)=>b.p-a.p);
-  const main=pool.filter(j=>j.d1&&!j.pr&&j.est>=st.min).sort((a,b)=>b.p-a.p);
-  const top=[...prin,...main].sort((a,b)=>b.p-a.p)[0];
-  const edge=pool.filter(j=>j.d1&&j.est<st.min&&j.est>=st.min-0.05&&(!top||j.p>top.p)).sort((a,b)=>(b.pr-a.pr)||(b.p-a.p)).slice(0,6);
-  const other=pool.filter(j=>!j.d1&&j.est>=st.min).sort((a,b)=>b.p-a.p);
-  const nj=n=>n+(n===1?' jogo':' jogos');
-  {const fx=g.filter(j=>j.d1&&j.est>=1.595&&j.est<=1.755&&(!st.hide||!started(j))&&(!q||(j.h+' '+j.a+' '+j.l).toLowerCase().includes(q))).sort((a,b)=>(b.pr-a.pr)||(b.d1-a.d1)||(b.p-a.p));$('cntF').textContent=nj(fx.length);$('faixa').innerHTML=fx.length?fx.map(j=>row(j,'')).join(''):'<div class="empty">Nenhum jogo com odd casa ou empate entre 1.60 e 1.75 hoje.</div>';}$('cnt0').textContent=nj(prin.length);$('minv2').textContent=f2(st.min);$('cntE').textContent=nj(edge.length);$('cnt1').textContent=nj(main.length);
-  $('prin').innerHTML=prin.length?[...prin].sort(srt).map(j=>row(j,'')).join(''):'<div class="empty">Nenhum jogo das ligas principais com essa odd mínima hoje.</div>';$('cnt2').textContent=(other.length===1?'1 jogo':other.length+' jogos');
-  $('other').innerHTML=other.length?[...other].sort(srt).slice(0,15).map(j=>row(j,'')).join(''):'<div class="empty">Nenhum jogo de outras divisões com essa odd.</div>';
-  $('main').innerHTML=main.length?[...main].sort(srt).slice(0,15).map(j=>row(j,'')).join(''):'<div class="empty">Nenhum jogo de outras primeiras divisões com essa odd mínima.</div>';
-  $('edge').innerHTML=edge.length?edge.sort(srt).map(j=>row(j,'edge')).join(''):'<div class="empty">Nada no limite agora.</div>';
-  const dcand=pool.filter(j=>j.d1&&j.est>=1.20).sort((a,b)=>b.p-a.p);
-  const mkp=need=>{const o=[];for(let x=0;x<dcand.length;x++)for(let y=x+1;y<dcand.length;y++){const a=dcand[x],b=dcand[y];if(a.l===b.l||a.est*b.est<1.6||(a.pr+b.pr)<need)continue;o.push({a,b,low:(a.est<st.min)+(b.est<st.min),pc:a.p*b.p})}return o};
-  let dpairs=mkp(2),dmix=false;if(!dpairs.length){dpairs=mkp(1);dmix=dpairs.length>0}
-  dpairs.sort((u,v)=>v.pc-u.pc);
-  const duos=dpairs.slice(0,3).map(q=>[q.a,q.b].sort((a,b)=>b.p-a.p));
-  const duo=duos[0]||[];
-  if(duos.length){
-    const leg=(j,n,o)=>{const k=j.h+'|'+j.a,d=DET[k],ok='d:'+o+':'+k;return `<details class="legd" data-k="${ok}"${open.has(ok)?' open':''}><summary class="leg"><span class="n">${n}</span><div class="lm"><b>${j.h} x ${j.a}</b><span>${j.t} · ${j.l.split(' · ')[1]||j.l}</span></div><div class="lr"><span class="lp">${pct(j.p)}</span><span class="lo">@${f2(j.est)}${j.est<st.min?' <em class="lowo">abaixo do mín.</em>':''}</span></div></summary>${d?ficha(j,d):'<p class="nof">Ficha ainda não disponível para este jogo.</p>'}</details>`};
-    $('board').innerHTML=`<span class="lab">Dupla do dia · ${dmix?'1 liga principal + 1 de outra 1ª divisão':'ligas principais'} · ${duos.length} ${duos.length===1?'opção':'opções'}</span>`+duos.map((d,i)=>{const oc=d[0].est*d[1].est,pc=d[0].p*d[1].p,val=st.stake*oc;return `<div style="${i?'margin-top:16px;padding-top:12px;border-top:1px dashed var(--line)':'margin-top:6px'}"><span style="display:block;font:800 18px 'Barlow Condensed',sans-serif;font-style:italic;color:var(--ink)">Opção ${i+1}</span>
-<div class="legs">${leg(d[0],1,i)}${leg(d[1],2,i)}</div>
-<div class="tot"><div><span class="k">Odd combinada</span><span class="big">~${f2(oc)}</span></div>
-<div><span class="k">Chance das duas baterem</span><span class="mid">${pct(pc)}</span></div>
-<div><span class="k">R$ 100 viram</span><span class="sret"><b>R$ ${val.toFixed(2).replace('.',',')}</b></span></div></div></div>`}).join('')+`
-<details class="dex"><summary>ⓘ Entenda os números</summary><p style="margin:6px 0 0">Cada opção junta dois jogos seguros de ligas principais diferentes (odd 1X a partir de 1.20 e odd combinada de pelo menos 1.60), ordenadas pela maior chance. Quando não há dupla só com ligas principais, entra 1 jogo de liga principal + 1 de outra primeira divisão. A odd combinada é a multiplicação das odds 1X estimadas, e a chance é a das duas baterem juntas. Com menos de 50%, a dupla falha mais vezes do que bate. Toque em cada jogo para ver a ficha. Confira as odds reais na sua casa de apostas.</p></details>`;
-  }else{$('board').innerHTML=`<span class="lab">Dupla do dia · só ligas principais</span>
-<p class="warnline" style="font-size:15px;color:var(--ink)">Hoje não há dois jogos seguros de ligas principais diferentes com odd combinada de pelo menos 1.60, então não tem dupla do dia. Veja as outras duplas abaixo.</p>`}
-  {const prT=pool.filter(j=>j.pr&&j.est>=1.20).sort((a,b)=>b.p-a.p);
-   let tri=[];const fill=pool.filter(j=>!j.pr&&j.est>=1.20).sort((a,b)=>b.p-a.p);
-   for(const j of [...prT,...fill]){if(tri.length<3&&!tri.some(t=>t.l===j.l))tri.push(j)}
-   if(tri.length===3){const oc=tri.reduce((s,j)=>s*j.est,1),pc=tri.reduce((s,j)=>s*j.p,1);
-    const lg3=(j,n)=>{const k=j.h+'|'+j.a,d=DET[k],ok='t:'+k;return `<details class="legd" data-k="${ok}"${open.has(ok)?' open':''}><summary class="leg"><span class="n">${n}</span><div class="lm"><b>${j.h} x ${j.a}</b><span>${j.t} · ${j.l.split(' · ')[1]||j.l}${j.pr?' <em class="pp">Principal</em>':''}</span></div><div class="lr"><span class="lp">${pct(j.p)}</span><span class="lo">@${f2(j.est)}${j.est<st.min?' <em class="lowo">abaixo do mín.</em>':''}</span></div></summary>${d?ficha(j,d):'<p class="nof">Ficha ainda não disponível para este jogo.</p>'}</details>`};
-    const npr=tri.filter(j=>j.pr).length;
-    $('tripla').innerHTML=`<span class="lab">Tripla do dia${npr<3?` · ${npr} das ligas principais + ${3-npr} de outra 1ª divisão`:' · ligas principais'}</span>
-<div class="legs">${tri.map((j,i)=>lg3(j,i+1)).join('')}</div>
-<div class="tot"><div><span class="k">Odd combinada</span><span class="big">~${f2(oc)}</span></div>
-<div><span class="k">Chance das três baterem</span><span class="mid">${pct(pc)}</span></div>
-<div><span class="k">R$ 100 viram</span><span class="sret"><b>R$ ${(100*oc).toFixed(2).replace('.',',')}</b></span></div></div>
-<p class="warnline">Três ligas diferentes: prioriza jogos das ligas principais e completa com o jogo mais provável das outras primeiras divisões. Com 3 pernas, a chance de tudo bater cai bastante.</p>`;
-    window.__tripla=tri.map(j=>[j.h,j.a,+f2(j.est)]);
-   }else{$('tripla').innerHTML='<span class="lab">Tripla do dia</span><p class="warnline">Não há jogos suficientes hoje para montar a tripla.</p>'}}
-  {const M=D.multipla;window.__multi=M||null;
-   if(M&&M.jogos&&M.jogos.length){const mu=M.jogos,N=mu.length,ST=M.aposta||10;
-    const oc=mu.reduce((s,j)=>s*j.odd,1),pc=mu.reduce((s,j)=>s*j.p,1);
-    const lgm=(j,n)=>{const k=j.h+'|'+j.a,d=DET[k],gj=g.find(x=>x.h===j.h&&x.a===j.a),ok='m:'+k;return `<details class="legd" data-k="${ok}"${open.has(ok)?' open':''}><summary class="leg"><span class="n">${n}</span><div class="lm"><b>${j.h} x ${j.a}</b><span>${j.t||''} · ${(j.liga||'').split(' · ')[1]||j.liga} <em class="pp">${j.mercado}</em></span></div><div class="lr"><span class="lp">${pct(j.p)}</span><span class="lo">@${f2(j.odd)}</span></div></summary>${d&&gj?ficha(gj,d):'<p class="nof">Ficha não disponível para este jogo.</p>'}</details>`};
-    $('multi').innerHTML=`<span class="lab">Múltipla geral · ${N} jogos · odd mínima 100 · aposta de R$ ${ST}</span>
-<div class="legs">${mu.map((j,i)=>lgm(j,i+1)).join('')}</div>
-<div class="tot"><div><span class="k">Odd combinada</span><span class="big">~${f2(oc)}</span></div>
-<div><span class="k">Chance de todos baterem</span><span class="mid">${(pc*100).toFixed(2).replace('.',',')}%</span></div>
-<div><span class="k">R$ ${ST} viram</span><span class="sret"><b>R$ ${(ST*oc).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}</b></span></div></div>
-<p class="warnline">Até 10 jogos, um palpite por jogo (casa, empate, fora ou ambos marcam), cada um com odd entre 1,90 e 2,50, escolhidos para ter a maior chance possível com odd combinada de pelo menos 100. Basta um jogo dar errado para perder tudo: é uma aposta de longo alcance, para valor pequeno.</p>`;
-   }else{$('multi').innerHTML=`<span class="lab">Múltipla geral · odd 100+</span><p class="warnline" style="font-size:15px;color:var(--ink)">Hoje não dá para montar a múltipla com odd 100 usando até 10 jogos.</p>`}}
-  {const c=pool.filter(j=>j.d1&&j.est>=1.20).sort((a,b)=>b.p-a.p).slice(0,30),pr=[],dks=new Set(duos.map(d=>[d[0].h,d[1].h].sort().join('|')));
-   for(let x=0;x<c.length;x++)for(let y=x+1;y<c.length;y++){const oc=c[x].est*c[y].est;if(oc>=1.6&&!dks.has([c[x].h,c[y].h].sort().join('|')))pr.push({a:c[x],b:c[y],pc:c[x].p*c[y].p,oc})}
-   pr.sort((u,v)=>((v.a.pr+v.b.pr)-(u.a.pr+u.b.pr))||(v.pc-u.pc)||(v.oc-u.oc));
-   const out=[],used={};for(const q of pr){const ka=q.a.h,kb=q.b.h;if((used[ka]||0)>=2||(used[kb]||0)>=2)continue;used[ka]=(used[ka]||0)+1;used[kb]=(used[kb]||0)+1;out.push(q);if(out.length>=5)break}
-   window.__duplas={dupla_do_dia:duo.length===2?duo.map(j=>[j.h,j.a,+f2(j.est)]):null,opcoes:duos.map(d=>d.map(j=>[j.h,j.a,+f2(j.est)])),outras:out.map(q=>[[q.a.h,q.a.a,+f2(q.a.est)],[q.b.h,q.b.a,+f2(q.b.est)]])};
-   const lg=(j,q)=>{const k=j.h+'|'+j.a,d=DET[k],ok='s:'+q+':'+k;return `<details class="sleg" data-k="${ok}"${open.has(ok)?' open':''}><summary><b>${j.h} x ${j.a}</b> · ${j.t}${j.pr?' <em class="pp">Principal</em>':''}<small>${j.l} · ${pct(j.p)} · @${f2(j.est)} · <span class="vf"></span></small></summary>${d?ficha(j,d):'<p class="nof">Ficha ainda não disponível para este jogo.</p>'}</details>`};
-   $('cntS').textContent=out.length+(out.length===1?' dupla':' duplas');
-   $('safe').innerHTML=out.length?out.map((q,i)=>{const ok='sp:'+i;return `<details class="spd" data-k="${ok}"${open.has(ok)?' open':''}><summary><span class="nm">${q.a.h} + ${q.b.h}<small>${q.a.t} e ${q.b.t} · R$ 100 → R$ ${(100*q.oc).toFixed(2).replace('.',',')}</small></span><span class="nv"><b>${pct(q.pc)}</b><span>odd ~${f2(q.oc)}</span></span></summary><div class="body">${lg(q.a,i)}${lg(q.b,i)}</div></details>`}).join(''):'<div class="empty">Nenhuma dupla de 1ª divisão chega a odd 1.60 hoje.</div>';}
-  {const O=D.ontem;const el=$('ontem');
-   if(!O||!O.data){$('ontemd').textContent='';el.innerHTML='<div class="empty">Os resultados aparecem aqui a partir da próxima atualização, com as duplas do dia anterior que bateram e as que não bateram.</div>';}
-   else if(!O.duplas||!O.duplas.length){const [y,m,dd]=O.data.split('-');$('ontemd').textContent=`${dd}/${m}`;el.innerHTML=`<div class="empty">Não houve dupla ontem (${dd}/${m}). Nesse dia nenhum jogo passou no filtro de segurança para montar dupla, tripla ou múltipla.</div>`;}
-   else{const [y,m,dd]=O.data.split('-');$('ontemd').textContent=`${dd}/${m}`;
-    const fin=O.duplas.filter(x=>x.bateu!==null&&x.bateu!==undefined),hit=fin.filter(x=>x.bateu).length;
-    const net=fin.reduce((s,x)=>{const a=x.aposta||100;return s+(x.bateu?a*x.odd-a:-a)},0);
-    const br=v=>(v<0?'-':'+')+'R$ '+Math.abs(v).toFixed(2).replace('.',',');
-    el.innerHTML=`<div class="sum"><div><b class="ok">${hit}</b><span>bateram</span></div><div><b class="no">${fin.length-hit}</b><span>não bateram</span></div><div><b class="${net>=0?'ok':'no'}">${br(net)}</b><span>R$ 100 em cada (R$ 10 na múltipla)</span></div></div>`+
-    O.duplas.map(x=>{const st=x.bateu===true?'<span class="st ok">✓ Bateu</span>':x.bateu===false?'<span class="st no">✗ Não bateu</span>':'<span class="st" style="color:var(--mute)">Sem resultado</span>';
-     return `<div class="rd ${x.bateu===true?'hit':x.bateu===false?'miss':''}"><div class="hd"><b>${x.tipo}</b>${st}</div>`+
-     x.jogos.map(g=>`<div class="rl"><i class="${g.ok===true?'ok':g.ok===false?'no':''}">${g.ok===true?'✓':g.ok===false?'✗':'–'}</i><span><b>${g.h} x ${g.a}</b><small>${g.liga||''}${g.mercado?' · '+g.mercado:''} · @${f2(g.odd)}</small></span><span class="sc">${g.placar||'—'}</span></div>`).join('')+
-     `<div class="ft">Odd ~${f2(x.odd)} · R$ ${x.aposta||100} → <b>${x.bateu===true?'R$ '+((x.aposta||100)*x.odd).toFixed(2).replace('.',','):x.bateu===false?'R$ 0,00':'—'}</b></div></div>`}).join('')+
-    '<p class="warnline">A aposta "casa ou empate" bate quando o mandante vence ou empata no tempo normal. Os placares vêm do Flashscore, e jogo adiado fica sem resultado.</p>';}}
-  try{localStorage.setItem('ce-st',JSON.stringify(st))}catch(e){}
+ $('minv').textContent=f2(st.min);$('minv2').textContent=f2(st.min);$('min').value=st.min;$('sort').value=st.sort;$('hide').setAttribute('aria-pressed',st.hide);$('stakev').textContent=stk();
+ if(document.activeElement!==$('stake'))$('stake').value=st.stake;
+ const q=st.q.trim().toLowerCase();
+ const ls=[...new Set(g.filter(j=>j.d1).map(j=>j.l))].sort((a,b)=>(PRIN.test(b)-PRIN.test(a))||a.localeCompare(b));
+ $('ligas').innerHTML=`<button type="button" class="chip sm" data-liga="" aria-pressed="${!st.liga}">Todas</button>`+ls.map(l=>`<button type="button" class="chip sm" data-liga="${esc(l)}" aria-pressed="${st.liga===l}">${esc(lshort(l))}</button>`).join('');
+ const vis=j=>(!q||(j.h+' '+j.a+' '+j.l).toLowerCase().includes(q))&&(!st.liga||j.l===st.liga)&&(!st.hide||!started(j));
+ const srt={p:(a,b)=>b.p-a.p,t:(a,b)=>a.t.localeCompare(b.t),o:(a,b)=>b.est-a.est}[st.sort];
+ const nj=n=>n+(n===1?' jogo':' jogos');
+ /* listas (só jogos que passaram no filtro de segurança, com ficha em det) */
+ const lst=g.filter(j=>vis(j)&&j.d1&&j.est>=1.20&&DET[j.k]);
+ const prin=lst.filter(j=>j.pr&&j.est>=st.min),main=lst.filter(j=>!j.pr&&j.est>=st.min);
+ const top=[...prin,...main].sort((a,b)=>b.p-a.p)[0];
+ const edge=lst.filter(j=>j.est>=1.25&&j.est<1.30&&j.est<st.min&&(!top||j.p>top.p)).sort((a,b)=>(b.pr-a.pr)||(b.p-a.p)).slice(0,6);
+ const fx=g.filter(j=>vis(j)&&j.d1&&j.est>=1.595&&j.est<=1.755).sort((a,b)=>(b.pr-a.pr)||(b.p-a.p));
+ $('cntF').textContent=nj(fx.length);$('faixa').innerHTML=fx.length?fx.map(j=>row(j,'')).join(''):'<div class="empty">Nenhum jogo com odd casa ou empate entre 1.60 e 1.75 hoje.</div>';
+ $('cnt0').textContent=nj(prin.length);$('prin').innerHTML=prin.length?prin.sort(srt).map(j=>row(j,'')).join(''):'<div class="empty">Nenhum jogo das ligas principais passou no filtro de segurança com essa odd mínima.</div>';
+ $('cnt1').textContent=nj(main.length);$('main').innerHTML=main.length?main.sort(srt).slice(0,15).map(j=>row(j,'')).join(''):'<div class="empty">Nenhum jogo de outras primeiras divisões passou no filtro com essa odd mínima.</div>';
+ $('cntE').textContent=nj(edge.length);$('edge').innerHTML=edge.length?edge.map(j=>row(j,'edge')).join(''):'<div class="empty">Nada no limite agora.</div>';
+ /* apostas do dia: sempre com todos os jogos do filtro, sem depender da busca */
+ const pool=g.filter(j=>j.d1&&j.est>=1.20&&DET[j.k]&&(!st.hide||!started(j))).sort((a,b)=>b.p-a.p);
+ const mkp=need=>{const o=[];for(let x=0;x<pool.length;x++)for(let y=x+1;y<pool.length;y++){const a=pool[x],b=pool[y];if(a.l===b.l||a.est*b.est<1.6||(a.pr+b.pr)<need)continue;o.push({a,b,pc:a.p*b.p})}return o.sort((u,v)=>v.pc-u.pc)};
+ let dp=mkp(2),dmix=false;if(!dp.length){dp=mkp(1);dmix=dp.length>0}
+ const duos=dp.slice(0,3).map(q=>[q.a,q.b].sort((a,b)=>b.p-a.p));
+ $('board').innerHTML=duos.length?`<span class="lab">Dupla do dia · ${dmix?'1 liga principal + 1 de outra 1ª divisão':'ligas principais'} · ${duos.length} ${duos.length===1?'opção':'opções'}</span>`+duos.map((d,i)=>`<div class="opt"><span class="on">Opção ${i+1}</span><div class="legs">${leg(d[0],1,'d'+i)}${leg(d[1],2,'d'+i)}</div>${tot(d,'Chance das duas baterem')}${shareRow('d'+i,'Dupla do dia, opção '+(i+1),d)}</div>`).join('')
+  :`<span class="lab">Dupla do dia</span><p class="warnline big">Hoje não há dois jogos seguros de ligas diferentes, com pelo menos um de liga principal, que somem odd 1.60. Veja as outras duplas abaixo.</p>`;
+ const tri=[];for(const j of [...pool.filter(j=>j.pr),...pool.filter(j=>!j.pr)])if(tri.length<3&&!tri.some(t=>t.l===j.l))tri.push(j);
+ const npr=tri.filter(j=>j.pr).length;
+ $('tripla').innerHTML=tri.length===3?`<span class="lab">Tripla do dia${npr<3?` · ${npr} de liga principal + ${3-npr} de outra 1ª divisão`:' · ligas principais'}</span><div class="legs">${tri.map((j,i)=>leg(j,i+1,'t',1)).join('')}</div>${tot(tri,'Chance das três baterem')}${shareRow('t','Tripla do dia',tri)}<p class="warnline">Três ligas diferentes. Com 3 pernas, a chance de tudo bater cai bastante.</p>`
+  :'<span class="lab">Tripla do dia</span><p class="warnline big">Hoje não há jogos seguros de três ligas diferentes para montar a tripla.</p>';
+ const mu=multipla(pool);
+ $('multi').innerHTML=mu?`<span class="lab">Múltipla geral · ${mu.js.length} jogos · meta odd ${mu.meta}</span><div class="legs">${mu.js.map((j,i)=>leg(j,i+1,'m',1)).join('')}</div>${tot(mu.js,'Chance de todos baterem')}${shareRow('m','Múltipla geral',mu.js)}<p class="warnline">Até 5 jogos seguros, buscando odd 5 (senão 4, senão 3) com a maior chance possível. Basta um jogo dar errado para perder tudo.</p>`
+  :'<span class="lab">Múltipla geral</span><p class="warnline big">Hoje os jogos seguros não chegam a odd 3 juntos, então não tem múltipla.</p>';
+ {const c=pool.slice(0,30),pr=[],dks=new Set(duos.map(d=>[d[0].k,d[1].k].sort().join('#')));
+  for(let x=0;x<c.length;x++)for(let y=x+1;y<c.length;y++){const oc=c[x].est*c[y].est;if(oc>=1.6&&!dks.has([c[x].k,c[y].k].sort().join('#')))pr.push({a:c[x],b:c[y],pc:c[x].p*c[y].p,oc})}
+  pr.sort((u,v)=>((v.a.pr+v.b.pr)-(u.a.pr+u.b.pr))||(v.pc-u.pc));
+  const out=[],used={};for(const q of pr){if((used[q.a.h]||0)>=2||(used[q.b.h]||0)>=2)continue;used[q.a.h]=(used[q.a.h]||0)+1;used[q.b.h]=(used[q.b.h]||0)+1;out.push(q);if(out.length>=5)break}
+  $('cntS').textContent=out.length+(out.length===1?' dupla':' duplas');
+  $('safe').innerHTML=out.length?out.map((q,i)=>{const ok='sp:'+i;return `<details class="spd" data-k="${ok}"${open.has(ok)?' open':''}><summary><span class="nm">${esc(q.a.h)} + ${esc(q.b.h)}<small>${q.a.t} e ${q.b.t} · ${stk()} → ${brl(st.stake*q.oc)}</small></span><span class="nv"><b>${pct(q.pc)}</b><span>odd ~${f2(q.oc)}</span></span></summary><div class="body legs">${leg(q.a,1,'s'+i,1)}${leg(q.b,2,'s'+i,1)}</div></details>`}).join(''):'<div class="empty">Nenhuma outra dupla segura chega a odd 1.60 hoje.</div>';}
+ /* bandeja "sua dupla" */
+ const sel=[...picks].map(k=>G[k]).filter(Boolean);const tr=$('tray');
+ if(sel.length){const oc=sel.reduce((s,j)=>s*j.est,1),pc=sel.reduce((s,j)=>s*j.p,1),same=new Set(sel.map(j=>j.l)).size<sel.length;
+  tr.hidden=false;tr.innerHTML=`<div class="wrap trw"><div class="tri"><b>Sua ${sel.length===1?'seleção':sel.length===2?'dupla':sel.length===3?'tripla':'múltipla'}</b><small>${sel.map(j=>esc(j.h)).join(' + ')}${same?' · ⚠ tem jogos da mesma liga':''}</small></div><div class="trn"><span><small>odd</small><b>~${f2(oc)}</b></span><span><small>chance</small><b class="ok">${pct(pc)}</b></span><span><small>${stk()} →</small><b>${brl(st.stake*oc)}</b></span></div><button type="button" class="chip sm" id="trayclear">Limpar</button></div>`;
+  document.body.classList.add('hastray')}else{tr.hidden=true;document.body.classList.remove('hastray')}
+ /* ontem */
+ {const O=D.ontem,el=$('ontem');
+  if(!O||!O.data){$('ontemd').textContent='';el.innerHTML='<div class="empty">Os resultados de ontem aparecem aqui a partir da próxima atualização.</div>'}
+  else if(!O.duplas||!O.duplas.length){$('ontemd').textContent=dm(O.data);el.innerHTML=`<div class="empty">Não houve dupla ontem (${dm(O.data)}). Nesse dia nenhum jogo passou no filtro de segurança para montar dupla, tripla ou múltipla.</div>`}
+  else{$('ontemd').textContent=dm(O.data);el.innerHTML=sumHTML(O.duplas)+betsHTML(O.duplas)+'<p class="warnline">A aposta casa ou empate bate quando o mandante vence ou empata no tempo normal. Os placares vêm do Flashscore, e jogo adiado fica sem resultado.</p>'}}
+ renderHist();
+ try{localStorage.setItem('bpbet-st',JSON.stringify({min:st.min,hide:st.hide,sort:st.sort,stake:st.stake}))}catch(e){}
 }
-$('sub').textContent=`Jogos de ${dataBR} · atualizado ${(D.atualizado||'').split(' ')[1]||D.atualizado}`;
-$('note').textContent=`Múltipla: até 10 jogos com odd de 1,90 a 2,50 cada (casa, empate, fora ou ambos marcam), odd combinada mínima de 100, para jogar R$ 10. Filtro de segurança (listas e duplas): só entram jogos com chance de 68% ou mais, sem risco alto de poupar titulares e sem o visitante bem mais motivado (a forma dos últimos 5 aparece só como informação na ficha). Probabilidade = chance implícita nas odds 1X2 (sem a margem da casa). A odd 1X é estimada a partir do 1X2 — confira na sua casa de apostas antes de entrar. Probabilidade não é garantia: com 70%, a casa ainda perde cerca de 3 em cada 10. Toque num jogo para ver a ficha (classificação, últimos 5, próximos jogos, importância e risco de poupar). A ficha existe para os jogos principais do dia, e a análise de importância e rodízio é uma leitura da tabela e do calendário, não informação oficial dos clubes. A lista mostra os jogos mais prováveis do dia que tinham odds no Flashscore. Aposta não é investimento; 18+.`;
+$('sub').textContent=`Jogos de ${dm(D.data)} · atualizado ${(D.atualizado||'').split(' ')[1]||D.atualizado||''}`;
+$('note').textContent=`Filtro de segurança (listas, duplas, tripla e múltipla): só entram jogos com chance de 68% ou mais, sem risco alto de poupar titulares e sem o visitante bem mais motivado (a forma dos últimos 5 aparece só como informação na ficha). Dupla do dia: dois jogos de ligas diferentes, pelo menos um de liga principal, odd combinada de 1.60 ou mais. Múltipla: até 5 jogos seguros, meta de odd 5 (senão 4, senão 3). Probabilidade = chance implícita nas odds 1X2, sem a margem da casa. A odd 1X é estimada a partir do 1X2: confira na sua casa de apostas antes de entrar. Probabilidade não é garantia: com 70%, a casa ainda perde cerca de 3 em cada 10. Toque em ＋ em qualquer jogo para montar a sua própria combinação. Aposta não é investimento; 18+.`;
 $('min').addEventListener('input',e=>{st.min=+e.target.value;render()});
-$('board').addEventListener('change',e=>{if(e.target.id==='stake'){const v=parseFloat(String(e.target.value).replace(',','.'));if(v>0){st.stake=v;render()}}});
+$('stake').addEventListener('input',e=>{const v=parseFloat(String(e.target.value).replace(',','.'));if(v>0){st.stake=v;render()}});
 $('hide').addEventListener('click',()=>{st.hide=!st.hide;render()});
 $('sort').addEventListener('change',e=>{st.sort=e.target.value;render()});
 $('q').addEventListener('input',e=>{st.q=e.target.value;render()});
-render();
+render();setTab(location.hash.slice(1));
 setInterval(render,60000);
 }
 </script>
@@ -439,6 +532,7 @@ document.querySelectorAll('.board,.safe,.sec').forEach((el,i)=>{el.classList.add
 (async()=>{let txt='';try{const r=await fetch('dados.json?t='+Date.now(),{cache:'no-store'});if(r.ok)txt=await r.text()}catch(e){}
 if(txt)document.getElementById('dados').textContent=txt;
 for(const b of document.querySelectorAll('script.boot')){const n=document.createElement('script');n.textContent=b.textContent;document.body.appendChild(n)}})();
+if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 </script>
 </body>
 </html>
